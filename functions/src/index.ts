@@ -13,7 +13,10 @@
 import {helloWorld} from "./hello-world/restful/helloWorld";
 import {createUserRef} from "./auth/reactive/createUserRef";
 import {deleteUserRef} from "./auth/reactive/deleteUserRef";
+import { addDummyUsers } from "./auth/restful/addDummyUsers";
+import {testFunction} from "./notification/restful/test";
+import { sendNotification } from "./notification/restful/sendNotification";
 
 
-export { helloWorld, createUserRef, deleteUserRef};
+export { helloWorld, createUserRef, deleteUserRef, addDummyUsers, testFunction, sendNotification};
 
