@@ -10,13 +10,20 @@
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 
-import {helloWorld} from "./hello-world/restful/helloWorld";
-import {createUserRef} from "./auth/reactive/createUserRef";
-import {deleteUserRef} from "./auth/reactive/deleteUserRef";
+import { helloWorld } from "./hello-world/restful/helloWorld";
+import { createUserRef } from "./auth/reactive/createUserRef";
+import { deleteUserRef } from "./auth/reactive/deleteUserRef";
 import { addDummyUsers } from "./auth/restful/addDummyUsers";
-import {testFunction} from "./notification/restful/test";
+import { testFunction } from "./notification/restful/test";
 import { sendNotification } from "./notification/restful/sendNotification";
+import { getFocusStatus } from "./notification/restful/getFocusStatus";
 
-
-export { helloWorld, createUserRef, deleteUserRef, addDummyUsers, testFunction, sendNotification};
-
+export {
+    helloWorld,
+    createUserRef,
+    deleteUserRef,
+    addDummyUsers,
+    testFunction,
+    sendNotification,
+    getFocusStatus,
+};
