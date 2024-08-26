@@ -13,6 +13,8 @@ export const sendNotification = functions.https.onCall(async (data, context) =>{
     const senderUid = data.senderUid;
     const receiverUid = data.receiverUid;
     const focusStatus = data.focusStatus;
+    const bypass = data.bypass;
+
 
     // create a function which first check from firestore db that whether the user with uid exists or not
     const userRef = firestore.doc(`users/${receiverUid}`);
@@ -30,6 +32,51 @@ export const sendNotification = functions.https.onCall(async (data, context) =>{
 
     const receiverName = receiver.data()?.name;
     const senderName = sender.data()?.name;
+
+    if (bypass) {
+        // send message to both sender and receiver, as receiver is not in DND mode
+        // send message to receiver
+        const messageToReceiver = {
+            notification: {
+                title: `Notification from ${senderName}`,
+                body: `${senderName} is sending you an urgent notification, please call them.`,
+            },
+            data: {
+                type: notificationTypeMap[NotificationType.receivedSuccessfully].toString(),
+                senderUid: senderUid,
+            },
+            token: receiverDeviceToken,
+        }
+
+        try {
+            await messaging.send(messageToReceiver);
+            logger.info("Message sent to receiver about the successful delivery, bypassed mode");
+        } catch (error) {
+            logger.error(`Error sending message to receiver about the successful delivery: ${error}, bypassed mode`);
+        }
+
+        // send message to sender
+        const messageToSender = {
+            notification: {
+                title: "Notification sent successfully",
+                body: `Your notification to ${receiverName} has been sent successfully, They will call you soon.`,
+            },
+            data: {
+                type: notificationTypeMap[NotificationType.sentSuccessfully].toString(),
+                receiverUid: receiverUid,
+            },
+            token: senderDeviceToken,
+        }
+
+        try {
+            await messaging.send(messageToSender);
+            logger.info("Message sent to sender about the successful delivery, bypassed mode");
+        } catch (error) {
+            logger.error(`Error sending message to sender about the successful delivery: ${error}, bypassed mode`);
+        }
+
+        return { message: "Notification sent to sender and receiver about the successful delivery" };
+    }
 
     // const messageToReceiver = {
     //     notification: {
@@ -149,6 +196,7 @@ export const sendNotification = functions.https.onCall(async (data, context) =>{
             data: {
                 type: notificationTypeMap[NotificationType.dndOn].toString(),
                 receiverUid: receiverUid,
+                receiverName: receiverName,
             },
             token: senderDeviceToken,
         }
