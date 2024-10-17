@@ -25,15 +25,19 @@
   },
   "emulators": {
     "auth": {
+      "host": "0.0.0.0", // comment this for testing on android or ios emulators
       "port": 9099
     },
     "functions": {
+      "host": "0.0.0.0",// comment this for testing on android or ios emulators
       "port": 5001
     },
     "firestore": {
+      "host": "0.0.0.0",// comment this for testing on android or ios emulators
       "port": 8080
     },
     "storage": {
+      "host": "0.0.0.0",// comment this for testing on android or ios emulators
       "port": 9199
     },
     "ui": {
